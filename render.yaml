@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: doc-converter
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free          # Change to "starter" if you need more RAM for heavy conversions
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 10000    # Render always uses port 10000 internally
+      - key: HOST
+        value: 0.0.0.0
+      - key: CORS_ORIGINS
+        value: "*"      # Safe since frontend & backend are on same origin
+      - key: MAX_FILE_SIZE_MB
+        value: 10
+      - key: CLEANUP_INTERVAL_MINUTES
+        value: 30
+      - key: FILE_TTL_MINUTES
+        value: 60
