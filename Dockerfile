@@ -21,14 +21,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies that might be required by Python PDF/Doc libraries
+# Install system dependencies required by Python PDF/Doc libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libffi-dev \
     libjpeg-dev \
     zlib1g-dev \
     fontconfig \
-    wkhtmltopdf \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
