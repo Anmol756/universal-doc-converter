@@ -1,6 +1,14 @@
 # Universal Document Converter
 
+## 🌍 Live Demo
+
+👉 https://universal-doc-converter.onrender.com/
+
 A production-ready full-stack web platform for converting documents between PDF, Word, and Image formats.
+
+## 📌 Overview
+
+Universal Document Converter is a full-stack web application that allows users to convert, compress, and manipulate documents efficiently. The platform is designed with a modular architecture and optimized for fast processing and scalability.
 
 **Frontend:** React (Vite) · **Backend:** FastAPI (Python) · **Storage:** Local filesystem (S3-ready)
 
@@ -17,6 +25,9 @@ A production-ready full-stack web platform for converting documents between PDF,
 - **Responsive UI** — works on desktop and mobile
 - **Dark glassmorphism** design with smooth animations
 
+
+# Screen Shot
+![alt text](image.png)
 ---
 
 ## 🚀 Quick Start

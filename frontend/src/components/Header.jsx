@@ -25,15 +25,16 @@ function Header({ onSelectTool, activeTool }) {
       <div className="header-inner container">
         <div className="header-brand" onClick={() => handleSelect(null)} style={{cursor: 'pointer'}}>
           <div className="header-logo">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#06b6d4" />
-                  <stop offset="100%" stopColor="#8b5cf6" />
+                  <stop offset="0%" stopColor="#7c3aed" />
+                  <stop offset="50%" stopColor="#a78bfa" />
+                  <stop offset="100%" stopColor="#06b6d4" />
                 </linearGradient>
               </defs>
               <rect x="2" y="4" width="18" height="24" rx="3" stroke="url(#logoGrad)" strokeWidth="2" fill="none"/>
-              <rect x="12" y="4" width="18" height="24" rx="3" stroke="url(#logoGrad)" strokeWidth="2" fill="rgba(139,92,246,0.15)"/>
+              <rect x="12" y="4" width="18" height="24" rx="3" stroke="url(#logoGrad)" strokeWidth="2" fill="rgba(124,58,237,0.12)"/>
               <path d="M18 12l3 3-3 3" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
@@ -103,7 +104,7 @@ function Header({ onSelectTool, activeTool }) {
 
         <div className="header-badge">
           <span className="badge-dot"></span>
-          MVP v1.0
+          Beta
         </div>
       </div>
     </header>

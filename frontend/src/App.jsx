@@ -3,6 +3,12 @@ import { useConverter, STATUS } from './hooks/useConverter';
 import { useToast } from './components/Toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import HeroSection from './components/HeroSection';
+import LivePreview from './components/LivePreview';
+import FeaturesGrid from './components/FeaturesGrid';
+import FormatsShowcase from './components/FormatsShowcase';
+import WorkflowSteps from './components/WorkflowSteps';
+import TrustBadges from './components/TrustBadges';
 import FileUpload from './components/FileUpload';
 import FileCard from './components/FileCard';
 import ConversionSelector from './components/ConversionSelector';
@@ -26,7 +32,9 @@ const TOOL_TITLES = {
 function App() {
   const [activeTool, setActiveTool] = useState(null);
   const [panelKey, setPanelKey] = useState(0); // drives re-mount for tab animation
+  const [showConverter, setShowConverter] = useState(false);
   const prevStatusRef = useRef(null);
+  const converterRef = useRef(null);
   const { addToast } = useToast();
 
   const {
@@ -74,6 +82,29 @@ function App() {
     setActiveTool(tool);
     setPanelKey((k) => k + 1); // trigger re-mount for tab animation
     reset(); // reset any ongoing conversions when switching tools
+    if (tool) {
+      setShowConverter(true);
+      // Scroll to converter
+      setTimeout(() => {
+        converterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  };
+
+  const handleUploadClick = () => {
+    setShowConverter(true);
+    setTimeout(() => {
+      converterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
+
+  const handleDemoClick = () => {
+    setShowConverter(true);
+    setActiveTool('pdf_to_word');
+    setPanelKey((k) => k + 1);
+    setTimeout(() => {
+      converterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const showUploadZone = status === STATUS.IDLE || status === STATUS.ERROR;
@@ -96,94 +127,109 @@ function App() {
         </div>
 
         <div className="container">
-          {/* Hero Section — animates on tool switch */}
-          <section className="hero-section animate-tab-enter" key={`hero-${panelKey}`} id="hero">
-            <h2 className="hero-title">
-              {activeTool ? (
-                <>{TOOL_TITLES[activeTool]} <span className="gradient-text">Tool</span></>
-              ) : (
-                <>Convert Your Documents <span className="gradient-text">Instantly</span></>
+          {/* ── Section 1: Hero ──────────────────────────────────────────── */}
+          <HeroSection
+            onUploadClick={handleUploadClick}
+            onDemoClick={handleDemoClick}
+          />
+
+          {/* ── Converter Panel (shown on Upload/Demo click or tool select) ── */}
+          {showConverter && (
+            <section
+              className="converter-panel glass-card animate-tab-enter"
+              key={`panel-${panelKey}`}
+              id="converter-panel"
+              ref={converterRef}
+            >
+              {/* Tool Title */}
+              {activeTool && (
+                <div className="converter-tool-header animate-fade-in">
+                  <h2 className="converter-tool-title">
+                    {TOOL_TITLES[activeTool]} <span className="gradient-text">Tool</span>
+                  </h2>
+                  <p className="converter-tool-desc">
+                    Upload your file(s) below to start using the {TOOL_TITLES[activeTool]} service.
+                  </p>
+                </div>
               )}
-            </h2>
-            <p className="hero-subtitle">
-              {activeTool 
-                ? `Upload your file(s) below to start using the ${TOOL_TITLES[activeTool]} service.`
-                : 'Transform files between PDF, Word, and Image formats with a single click. Fast, secure, and free.'}
-            </p>
-          </section>
 
-          {/* Converter Panel — animates on tool switch */}
-          <section className="converter-panel glass-card animate-tab-enter" key={`panel-${panelKey}`} id="converter-panel">
-            {/* Upload Zone */}
-            {showUploadZone && (
-              <FileUpload onFileSelect={upload} disabled={isProcessing} />
-            )}
+              {/* Upload Zone */}
+              {showUploadZone && (
+                <FileUpload onFileSelect={upload} disabled={isProcessing} />
+              )}
 
-            {/* File Cards */}
-            {showFileCard && (
-               <div className="file-cards-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                  {files.map((file, idx) => (
-                      <FileCard
-                        key={idx}
-                        file={file}
-                        uploadData={uploadData && uploadData.length > idx ? uploadData[idx] : null}
-                        onRemove={status !== STATUS.CONVERTING ? reset : undefined}
-                      />
-                  ))}
-               </div>
-            )}
+              {/* File Cards */}
+              {showFileCard && (
+                 <div className="file-cards-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+                    {files.map((file, idx) => (
+                        <FileCard
+                          key={idx}
+                          file={file}
+                          uploadData={uploadData && uploadData.length > idx ? uploadData[idx] : null}
+                          onRemove={status !== STATUS.CONVERTING ? reset : undefined}
+                        />
+                    ))}
+                 </div>
+              )}
 
-            {/* Add More Files Zone */}
-            {showAddMore && (
-              <div style={{ marginTop: '16px' }}>
-                <FileUpload onFileSelect={addFiles} disabled={isProcessing} />
-              </div>
-            )}
+              {/* Add More Files Zone */}
+              {showAddMore && (
+                <div style={{ marginTop: '16px' }}>
+                  <FileUpload onFileSelect={addFiles} disabled={isProcessing} />
+                </div>
+              )}
 
-            {/* Conversion Selector */}
-            {showSelector && (
-              <ConversionSelector
-                allowedConversions={uploadData?.allowed_conversions}
-                selectedType={conversionType}
-                onSelect={setConversionType}
-                disabled={isProcessing}
+              {/* Conversion Selector */}
+              {showSelector && (
+                <ConversionSelector
+                  allowedConversions={uploadData?.allowed_conversions}
+                  selectedType={conversionType}
+                  onSelect={setConversionType}
+                  disabled={isProcessing}
+                />
+              )}
+
+              {/* Status / Progress / Actions */}
+              <ConversionStatus
+                status={status}
+                uploadProgress={uploadProgress}
+                error={error}
+                downloadUrl={downloadUrl}
+                conversionType={activeTool || conversionType}
+                onConvert={() => convert()}
+                onDownload={() => { }}
+                onReset={reset}
               />
-            )}
-
-            {/* Status / Progress / Actions */}
-            <ConversionStatus
-              status={status}
-              uploadProgress={uploadProgress}
-              error={error}
-              downloadUrl={downloadUrl}
-              conversionType={activeTool || conversionType}
-              onConvert={() => convert()}
-              onDownload={() => { }}
-              onReset={reset}
-            />
-          </section>
-
-          {/* Features Section */}
-          <section className="features-section" id="features">
-            <div className="features-grid">
-              <div className="feature-card glass-card animate-fade-in">
-                <div className="feature-icon">⚡</div>
-                <h3 className="feature-title">Lightning Fast</h3>
-                <p className="feature-desc">Conversions complete in seconds, powered by optimized Python libraries</p>
-              </div>
-              <div className="feature-card glass-card animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                <div className="feature-icon">🔒</div>
-                <h3 className="feature-title">Secure & Private</h3>
-                <p className="feature-desc">Files are auto-deleted after processing. No data stored permanently</p>
-              </div>
-              <div className="feature-card glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <div className="feature-icon">🎯</div>
-                <h3 className="feature-title">High Fidelity</h3>
-                <p className="feature-desc">Preserves formatting, images, and structure during conversion</p>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
         </div>
+
+        {/* ── Section 2: Live Preview ─────────────────────────────────── */}
+        <LivePreview />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* ── Section 3: Features ─────────────────────────────────────── */}
+        <FeaturesGrid />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* ── Section 4: Supported Formats ────────────────────────────── */}
+        <FormatsShowcase />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* ── Section 5: Workflow ─────────────────────────────────────── */}
+        <WorkflowSteps />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* ── Section 6: Trust ────────────────────────────────────────── */}
+        <TrustBadges />
       </main>
 
       <Footer />

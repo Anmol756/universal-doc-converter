@@ -1,22 +1,31 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   File Card — v4.0 Premium (Violet + Cyan)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 .file-card {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   width: 100%;
 }
 
 .file-card-icon {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: var(--radius-md);
   border: 1px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1px;
+  gap: 2px;
+  transition: transform var(--transition-base);
+}
+
+.file-card:hover .file-card-icon {
+  transform: scale(1.06);
 }
 
 .file-card-emoji {
@@ -26,8 +35,9 @@
 
 .file-card-ext {
   font-size: 0.55rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.05em;
+  font-family: var(--font-mono);
 }
 
 .file-card-info {
@@ -39,15 +49,16 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .file-card-meta {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
 .meta-sep {
@@ -55,13 +66,14 @@
 }
 
 .file-card-type {
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: var(--radius-sm);
-  background: rgba(6, 182, 212, 0.1);
-  color: #67e8f9;
+  background: rgba(124, 58, 237, 0.08);
+  color: var(--accent-violet-light);
   font-weight: 600;
-  font-size: 0.65rem;
-  letter-spacing: 0.03em;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
 }
 
 .file-card-remove {
@@ -74,5 +86,5 @@
 .file-card-remove:hover {
   color: #ef4444;
   border-color: rgba(239, 68, 68, 0.3);
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(239, 68, 68, 0.06);
 }

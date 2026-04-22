@@ -1,0 +1,130 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Workflow Steps — 3-Step Timeline
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-section {
+  padding: 80px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-header {
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+.workflow-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+}
+
+.workflow-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 280px;
+}
+
+.workflow-step-card {
+  flex: 1;
+  padding: 36px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+.workflow-step-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center top, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.workflow-step-card:hover::after {
+  opacity: 1;
+}
+
+.workflow-step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-neon);
+}
+
+.workflow-step-number {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--accent-violet-light);
+  opacity: 0.4;
+  letter-spacing: 0.06em;
+}
+
+.workflow-step-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  background: rgba(124, 58, 237, 0.06);
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  transition: all var(--transition-base);
+}
+
+.workflow-step-card:hover .workflow-step-icon {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.25);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.12);
+  transform: scale(1.06);
+}
+
+.workflow-step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.workflow-step-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Connector Arrow ───────────────────────────────────────────────── */
+.workflow-connector {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  animation: arrowFlow 2s ease-in-out infinite;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .workflow-steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .workflow-step {
+    flex-direction: column;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .workflow-connector {
+    transform: rotate(90deg);
+    padding: 4px 0;
+  }
+}

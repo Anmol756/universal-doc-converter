@@ -1,28 +1,32 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Conversion Status — v4.0 Premium (Violet + Cyan)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 /* ── Status Pipeline ────────────────────────────────────────────── */
 .status-pipeline {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .pipeline-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   position: relative;
 }
 
 .pipeline-step {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   border: 2px solid var(--border-subtle);
   background: var(--bg-glass);
   color: var(--text-muted);
@@ -30,57 +34,57 @@
 }
 
 .pipeline-step.active {
-  border-color: rgba(6, 182, 212, 0.5);
-  background: rgba(6, 182, 212, 0.1);
-  color: #67e8f9;
-  box-shadow: var(--shadow-glow-cyan);
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(124, 58, 237, 0.08);
+  color: var(--accent-violet-light);
+  box-shadow: var(--shadow-glow-violet);
 }
 
 .pipeline-step.complete {
-  border-color: #34d399;
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
+  border-color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-emerald);
 }
 
 .pipeline-step.future {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .pipeline-label {
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-size: 0.66rem;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .pipeline-label.active {
-  color: #67e8f9;
+  color: var(--accent-violet-light);
 }
 
 .pipeline-label.complete {
-  color: #34d399;
+  color: var(--accent-emerald);
 }
 
 .pipeline-connector {
   position: absolute;
-  top: 22px;
-  left: calc(50% + 26px);
-  width: 48px;
+  top: 24px;
+  left: calc(50% + 28px);
+  width: 52px;
   height: 2px;
   background: var(--border-subtle);
   transition: background var(--transition-base);
 }
 
 .pipeline-connector.complete {
-  background: #34d399;
+  background: var(--accent-emerald);
 }
 
 .pipeline-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(6, 182, 212, 0.2);
-  border-top-color: #06b6d4;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(124, 58, 237, 0.2);
+  border-top-color: var(--accent-violet);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -93,7 +97,7 @@
 .progress-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .progress-label {
@@ -104,16 +108,17 @@
 
 .progress-value {
   font-size: 0.82rem;
-  color: var(--text-accent);
+  color: var(--accent-violet-light);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
 }
 
 .progress-track {
   width: 100%;
   height: 6px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
@@ -124,6 +129,19 @@
   background-size: 200% 100%;
   animation: gradient-shift 2s ease infinite;
   transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  filter: blur(6px);
+  border-radius: var(--radius-full);
 }
 
 /* ── Converting Spinner ────────────────────────────────────────── */
@@ -131,14 +149,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 16px 0;
+  gap: 14px;
+  padding: 20px 0;
 }
 
 .converting-spinner {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,15 +165,15 @@
 .spinner-ring {
   position: absolute;
   inset: 0;
-  border: 3px solid rgba(6, 182, 212, 0.1);
-  border-top-color: #06b6d4;
-  border-right-color: #8b5cf6;
+  border: 3px solid rgba(124, 58, 237, 0.1);
+  border-top-color: var(--accent-violet);
+  border-right-color: var(--accent-cyan);
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
 
 .spinner-icon {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   animation: spin 3s linear infinite reverse;
 }
 
@@ -174,12 +192,13 @@
 .action-buttons {
   display: flex;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .btn-convert {
-  padding: 14px 36px;
+  padding: 14px 40px;
   font-size: 0.95rem;
+  letter-spacing: 0.02em;
 }
 
 /* ── Success ───────────────────────────────────────────────────── */
@@ -187,13 +206,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .success-icon-wrapper {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,64 +227,65 @@
 }
 
 .success-icon {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   position: relative;
   z-index: 1;
 }
 
 .success-text {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #34d399;
+  color: var(--accent-emerald);
+  letter-spacing: -0.01em;
 }
 
 .success-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 4px;
+  gap: 14px;
+  margin-top: 6px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .btn-download {
-  padding: 12px 32px;
+  padding: 13px 34px;
   font-size: 0.9rem;
   text-decoration: none;
 }
 
 /* ── Error ─────────────────────────────────────────────────────── */
 .error-section {
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-radius: var(--radius-md);
-  background: rgba(239, 68, 68, 0.06);
-  border: 1px solid rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.14);
 }
 
 .error-content {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 14px;
 }
 
 .error-icon {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   flex-shrink: 0;
 }
 
 .error-text {
   font-size: 0.85rem;
   color: #fca5a5;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .error-retry {
-  padding: 6px 16px;
+  padding: 7px 18px;
   font-size: 0.78rem;
 }
 
 @media (max-width: 768px) {
   .pipeline-connector {
-    width: 24px;
+    width: 28px;
   }
 
   .success-actions {

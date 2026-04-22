@@ -127,8 +127,8 @@ function FileUpload({ onFileSelect, disabled }) {
             <path d="M8 32a8 8 0 008 8h16a8 8 0 000-16 10 10 0 00-20 4 6 6 0 00-4 4z" stroke="url(#uploadGrad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
             <defs>
               <linearGradient id="uploadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#06b6d4" />
-                <stop offset="100%" stopColor="#8b5cf6" />
+                <stop offset="0%" stopColor="#7c3aed" />
+                <stop offset="100%" stopColor="#06b6d4" />
               </linearGradient>
             </defs>
           </svg>
