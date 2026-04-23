@@ -7,6 +7,7 @@ import asyncio
 import logging
 from pathlib import Path
 from functools import partial
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import APIRouter, HTTPException
 
 from app.config import UPLOAD_DIR, OUTPUT_DIR, SUPPORTED_CONVERSIONS, ALLOWED_EXTENSIONS
@@ -16,6 +17,9 @@ from app.utils.file_handler import find_file_by_id, generate_file_id
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["Convert"])
+
+# Shared thread pool for CPU-bound conversions (avoids per-request thread creation overhead)
+_conversion_pool = ThreadPoolExecutor(max_workers=4, thread_name_prefix="converter")
 
 
 @router.post("/convert", response_model=ConvertResponse)
@@ -86,7 +90,7 @@ async def convert_file(request: ConvertRequest):
     try:
         loop = asyncio.get_event_loop()
         result_path = await loop.run_in_executor(
-            None,
+            _conversion_pool,
             partial(
                 run_conversion,
                 input_paths=input_paths,

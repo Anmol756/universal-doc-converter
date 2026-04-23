@@ -45,8 +45,8 @@ def convert_pdf_to_ppt(input_path: Path, output_path: Path) -> Path:
         for page_num in range(len(pdf_doc)):
             page = pdf_doc[page_num]
 
-            # Render page as image at 2x resolution for quality
-            mat = fitz.Matrix(2.0, 2.0)
+            # Render page as image at 1.5x resolution (good quality + faster)
+            mat = fitz.Matrix(1.5, 1.5)
             pix = page.get_pixmap(matrix=mat)
             img_bytes = pix.tobytes("png")
 

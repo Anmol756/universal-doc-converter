@@ -43,6 +43,11 @@
   animation: float 4s ease-in-out infinite;
 }
 
+.header-logo img {
+  border-radius: 6px;
+  object-fit: contain;
+}
+
 .header-title {
   font-size: 1.3rem;
   font-weight: 800;
