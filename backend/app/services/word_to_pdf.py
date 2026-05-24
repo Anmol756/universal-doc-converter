@@ -58,7 +58,19 @@ def _convert_with_libreoffice(input_file: Path, output_file: Path):
     if result.returncode != 0:
         raise RuntimeError(f"LibreOffice error: {result.stderr or result.stdout}")
         
-    if not output_file.exists():
+    # LibreOffice creates the output file using the input file's base name
+    # e.g. input.docx -> input.pdf in the outdir
+    expected_generated_file = output_file.parent / f"{input_file.stem}.pdf"
+    
+    if expected_generated_file.exists():
+        # Rename it to the actual requested output_file (often a UUID in our backend)
+        # Handle the case where the input and output have the exact same name
+        if expected_generated_file.resolve() != output_file.resolve():
+            # Remove output_file if it exists before renaming, to avoid FileExistsError on Windows
+            if output_file.exists():
+                output_file.unlink()
+            expected_generated_file.rename(output_file)
+    else:
         raise RuntimeError("LibreOffice finished, but the PDF was not created.")
 
 
