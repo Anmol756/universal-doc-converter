@@ -152,6 +152,11 @@ function App() {
                   </p>
                 </div>
               )}
+              {!activeTool && (
+                 <div className="warning-banner" style={{ backgroundColor: '#fff3cd', color: '#856404', padding: '15px', borderRadius: '8px', border: '1px solid #ffeeba', width: '100%', fontSize: '0.9rem' }}>
+                    <strong>Note:</strong> Some complex documents may experience minor formatting changes after conversion.
+                 </div>
+              )}
 
               {/* Upload Zone */}
               {showUploadZone && (
