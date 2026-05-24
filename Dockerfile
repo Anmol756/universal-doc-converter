@@ -21,13 +21,15 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies required by Python PDF/Doc libraries
+# Install system dependencies required by Python PDF/Doc libraries and LibreOffice for Linux conversions
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libffi-dev \
     libjpeg-dev \
     zlib1g-dev \
     fontconfig \
+    libreoffice \
+    libreoffice-writer \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies

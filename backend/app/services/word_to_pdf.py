@@ -5,6 +5,8 @@ Uses MS Word via win32com for high-fidelity conversion (Windows only).
 
 import logging
 import os
+import platform
+import subprocess
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -12,7 +14,7 @@ logger = logging.getLogger(__name__)
 def convert_word_to_pdf(input_path: Path, output_path: Path) -> Path:
     """
     Convert a Word (DOCX) file to PDF format.
-    Attempts high-fidelity conversion using MS Word.
+    Uses MS Word on Windows, and LibreOffice Headless on Linux.
     """
     if not input_path.exists():
         raise ValueError(f"Input file not found: {input_path}")
@@ -23,20 +25,41 @@ def convert_word_to_pdf(input_path: Path, output_path: Path) -> Path:
     output_path = output_path.with_suffix(".pdf")
     logger.info(f"Converting Word → PDF: {input_path.name} → {output_path.name}")
 
-    try:
-        # Attempt to use MS Word via COM for perfect layout preservation
-        _convert_with_msword(str(input_path), str(output_path))
-        logger.info("Successfully converted using MS Word.")
-        return output_path
-    except Exception as e:
-        logger.error(f"MS Word conversion failed: {e}")
-        raise RuntimeError(
-            "CRITICAL: High-Fidelity conversion failed. \n"
-            "Python tried to use your Microsoft Word application to save the PDF, "
-            "but Windows blocked access (COM Access Denied or Word is not installed). \n"
-            "Without MS Word or LibreOffice, it is impossible to preserve tables, images, and complex layouts. "
-            f"\n\nTechnical Error: {e}"
-        )
+    if platform.system() == "Windows":
+        try:
+            _convert_with_msword(str(input_path), str(output_path))
+            logger.info("Successfully converted using MS Word on Windows.")
+            return output_path
+        except Exception as e:
+            logger.error(f"MS Word conversion failed: {e}")
+            raise RuntimeError(f"High-Fidelity conversion failed via MS Word. Technical Error: {e}")
+    else:
+        # Linux / Docker / Render Environment
+        try:
+            _convert_with_libreoffice(input_path, output_path)
+            logger.info("Successfully converted using LibreOffice on Linux.")
+            return output_path
+        except Exception as e:
+            logger.error(f"LibreOffice conversion failed: {e}")
+            raise RuntimeError(f"High-Fidelity conversion failed via LibreOffice. Technical Error: {e}")
+
+def _convert_with_libreoffice(input_file: Path, output_file: Path):
+    cmd = [
+        "libreoffice",
+        "--headless",
+        "--convert-to", "pdf",
+        "--outdir", str(output_file.parent),
+        str(input_file)
+    ]
+    
+    # Run the LibreOffice conversion
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    
+    if result.returncode != 0:
+        raise RuntimeError(f"LibreOffice error: {result.stderr or result.stdout}")
+        
+    if not output_file.exists():
+        raise RuntimeError("LibreOffice finished, but the PDF was not created.")
 
 
 def _convert_with_msword(input_file: str, output_file: str):
