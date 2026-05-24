@@ -44,19 +44,32 @@ def convert_word_to_pdf(input_path: Path, output_path: Path) -> Path:
             raise RuntimeError(f"High-Fidelity conversion failed via LibreOffice. Technical Error: {e}")
 
 def _convert_with_libreoffice(input_file: Path, output_file: Path):
+    import uuid
+    import shutil
+    
+    # Generate a unique profile directory for this specific conversion
+    # This completely eliminates concurrency crashes in headless mode
+    profile_dir = Path(f"/tmp/lo_profile_{uuid.uuid4().hex}")
+    
     cmd = [
         "libreoffice",
+        f"-env:UserInstallation=file://{profile_dir}",
         "--headless",
-        "--convert-to", "pdf",
+        "--convert-to", "pdf:writer_pdf_Export",
         "--outdir", str(output_file.parent),
         str(input_file)
     ]
     
-    # Run the LibreOffice conversion
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    
-    if result.returncode != 0:
-        raise RuntimeError(f"LibreOffice error: {result.stderr or result.stdout}")
+    try:
+        # Run the LibreOffice conversion
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            raise RuntimeError(f"LibreOffice error: {result.stderr or result.stdout}")
+    finally:
+        # Clean up the isolated profile to save disk space on Render
+        if profile_dir.exists():
+            shutil.rmtree(profile_dir, ignore_errors=True)
         
     # LibreOffice creates the output file using the input file's base name
     # e.g. input.docx -> input.pdf in the outdir
