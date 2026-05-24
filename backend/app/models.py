@@ -37,7 +37,7 @@ class UploadResponse(BaseModel):
 class ConvertRequest(BaseModel):
     """Request body for file conversion."""
     file_id: str | None = Field(None, description="ID of a single uploaded file to convert")
-    file_ids: list[str] | None = Field(None, description="IDs of multiple uploaded files for bulk/merge operations")
+    file_ids: list[str] | None = Field(None, description="IDs of multiple uploaded files for bulk operations")
     conversion_type: ConversionType = Field(..., description="Type of conversion")
 
 

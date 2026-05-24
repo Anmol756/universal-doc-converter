@@ -25,7 +25,7 @@ CORS_ORIGINS = os.getenv(
 ).split(",")
 
 # ── File Constraints ───────────────────────────────────────────────────
-MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", 10))
+MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", 100))
 MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
 # ── Allowed MIME Types (mapped to category) ────────────────────────────
@@ -87,3 +87,4 @@ FILE_TTL_MINUTES = int(os.getenv("FILE_TTL_MINUTES", 60))
 
 # ── Storage Mode ────────────────────────────────────────────────────────
 STORAGE_MODE = os.getenv("STORAGE_MODE", "local")  # "local" | "s3"
+
