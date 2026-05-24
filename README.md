@@ -145,6 +145,21 @@ universal-doc-converter/
 
 ---
 
+## ⚠️ Known Limitations: Complex DOCX Files & Formatting
+
+Because this platform is designed to be hosted on free Linux servers (like Render), it relies on the open-source **LibreOffice** engine to convert Microsoft Word files.
+
+While simple documents (text, standard paragraphs, basic tables) convert perfectly, **highly complex `.docx` files will experience formatting shifts, overlapping text, or cut-off tables.**
+
+**Why does this happen?**
+Microsoft Word calculates the exact coordinates of "floating elements" (like text boxes, images with tight wrapping, or overlapping logos) using proprietary, closed-source math. Because LibreOffice does not have access to Microsoft's source code, it has to guess how to render these complex layouts. If the math is slightly off, a text box that fits perfectly in Word might expand and overlap surrounding text when rendered by LibreOffice on a Linux server.
+
+**How to get perfect conversions:**
+1. **Avoid floating elements:** Always set images and text boxes to "In Line with Text". Use invisible tables instead of absolute positioning.
+2. **Windows Hosting:** If you need 100% pixel-perfect conversions for any complex file, host this backend on a Windows Server. The Python code will automatically bypass LibreOffice and use the literal Microsoft Word engine via `win32com`.
+
+---
+
 ## 🔮 Advanced Features (Roadmap)
 
 1. **🤖 AI-Powered OCR** — Use Tesseract OCR to extract text from scanned PDFs/images
