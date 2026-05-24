@@ -22,7 +22,9 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Install system dependencies required by Python PDF/Doc libraries and LibreOffice for Linux conversions
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# We also install Microsoft-compatible fonts so LibreOffice renders DOCX layouts accurately
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
+    && apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libffi-dev \
     libjpeg-dev \
@@ -30,8 +32,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fontconfig \
     libreoffice \
     libreoffice-writer \
-    && rm -rf /var/lib/apt/lists/*
-
+    ttf-mscorefonts-installer \
+    fonts-liberation \
+    fonts-crosextra-carlito \
+    fonts-crosextra-caladea \
+    && rm -rf /var/lib/apt/lists/* \
+    && fc-cache -f -v
 # Install Python dependencies
 COPY backend/requirements.txt ./backend/
 WORKDIR /app/backend
